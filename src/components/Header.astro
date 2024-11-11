@@ -1,23 +1,59 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { languages, defaultLang } from "../i18n/ui";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const handleLanguageChange = (event: Event) => {
+  const target = event.target as HTMLSelectElement;
+  const selectedLang = target.value;
+  window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
+};
+---
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const languageSwitcher = document.getElementById("languageSwitcher");
+
+    // Add an event listener to handle language change
+    languageSwitcher.addEventListener("change", (event) => {
+      const selectedLang = event.target.value ?? "it";
+      window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
+    });
+  });
+</script>
+
 <header
   class="sticky top-0 z-50 bg-white shadow-md flex items-center justify-between px-4 py-3"
 >
   <img src="/assets/name.png" alt="Sindia Logo" class="h-8 w-auto" />
   <nav class="hidden md:flex space-x-6 text-primary font-heading">
-    <a href="#home" class="hover:underline">Home</a>
-    <a href="#menu" class="hover:underline">Menu</a>
-    <a href="#gallery" class="hover:underline">Gallery</a>
-    <a href="#about" class="hover:underline">About Us</a>
-    <a href="#reviews" class="hover:underline">Reviews</a>
-    <a href="#contact" class="hover:underline">Contact</a>
+    <a href={`/${lang}#home`} class="hover:underline">{t("header.home")}</a>
+    <a href={`/${lang}#menu`} class="hover:underline">{t("header.menu")}</a>
+    <a href={`/${lang}#gallery`} class="hover:underline"
+      >{t("header.gallery")}</a
+    >
+    <a href={`/${lang}#about`} class="hover:underline">{t("header.about")}</a>
+    <a href={`/${lang}#reviews`} class="hover:underline"
+      >{t("header.reviews")}</a
+    >
+    <a href={`/${lang}#contact`} class="hover:underline"
+      >{t("header.contact")}</a
+    >
   </nav>
   <div class="flex items-center space-x-4">
     <button
       class="bg-primary text-white px-4 py-2 rounded-full hover:bg-secondary transition-all"
-      >Reserve</button
+      >{t("header.reserve")}</button
     >
-    <select class="border-none bg-transparent font-body text-primary">
-      <option value="en">EN</option>
-      <option value="it">IT</option>
+    <select
+      class="border-none bg-transparent font-body text-primary"
+      value={lang}
+      id="languageSwitcher"
+    >
+      <option value="en" selected={lang === "en"}>EN</option>
+      <option value="it" selected={lang === "it"}>IT</option>
     </select>
   </div>
 </header>

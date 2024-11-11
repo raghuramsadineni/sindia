@@ -1,16 +1,24 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+// Determine the language from the URL
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang); // t function to retrieve translations
+---
+
 <footer class="py-8 px-6 bg-gray-800 text-white text-center">
   <div class="max-w-4xl mx-auto">
     <div class="mb-6">
-      <h2 class="font-heading text-3xl mb-4">Sindia Ristorante</h2>
-      <p class="font-body text-lg">Authentic Indian Cuisine in Sienna, Italy</p>
+      <h2 class="font-heading text-3xl mb-4">{t("footer.title")}</h2>
+      <p class="font-body text-lg">{t("footer.subtitle")}</p>
     </div>
     <nav class="flex justify-center space-x-6 mb-8">
-      <a href="#home" class="hover:underline">Home</a>
-      <a href="#menu" class="hover:underline">Menu</a>
-      <a href="#gallery" class="hover:underline">Gallery</a>
-      <a href="#about" class="hover:underline">About Us</a>
-      <a href="#reviews" class="hover:underline">Reviews</a>
-      <a href="#contact" class="hover:underline">Contact</a>
+      <a href="#home" class="hover:underline">{t("footer.nav.home")}</a>
+      <a href="#menu" class="hover:underline">{t("footer.nav.menu")}</a>
+      <a href="#gallery" class="hover:underline">{t("footer.nav.gallery")}</a>
+      <a href="#about" class="hover:underline">{t("footer.nav.about")}</a>
+      <a href="#reviews" class="hover:underline">{t("footer.nav.reviews")}</a>
+      <a href="#contact" class="hover:underline">{t("footer.nav.contact")}</a>
     </nav>
     <div class="flex justify-center space-x-6 mb-8">
       <a href="https://facebook.com" target="_blank" aria-label="Facebook">
@@ -24,7 +32,7 @@
       </a>
     </div>
     <p class="font-body text-sm">
-      © 2024 Sindia Ristorante. All rights reserved.
+      {t("footer.rights")}
     </p>
   </div>
 </footer>

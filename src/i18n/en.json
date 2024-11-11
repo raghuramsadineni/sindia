@@ -1,0 +1,78 @@
+{
+    "meta": {
+        "description": "Experience authentic Indian cuisine at Sindia in Sienna, Italy. Enjoy a variety of traditional dishes made with fresh ingredients.",
+        "title": "Sindia - Authentic Indian Cuisine"
+    },
+    "header": {
+        "home": "Home",
+        "menu": "Menu",
+        "gallery": "Gallery",
+        "about": "About Us",
+        "reviews": "Reviews",
+        "contact": "Contact",
+        "reserve": "Reserve",
+        "language": "EN"
+    },
+    "hero": {
+        "welcome": "Welcome to Sindia",
+        "tagline": "Authentic Indian Cuisine in the Heart of Sienna",
+        "reserveButton": "Reserve a Table"
+    },
+    "about": {
+        "title": "About Sindia",
+        "description": "Sindia is an authentic Indian restaurant located in the heart of Sienna, Italy. We bring the flavors of India to your table, combining traditional recipes with fresh local ingredients."
+    },
+    "contact": {
+        "title": "Contact Us",
+        "description": "We'd love to hear from you! For reservations, questions, or general inquiries, please get in touch.",
+        "message": "Send Message",
+        "call": "Call us at",
+        "email": "Email us at"
+    },
+    "footer": {
+        "title": "Sindia Ristorante",
+        "subtitle": "Authentic Indian Cuisine in Sienna, Italy",
+        "nav": {
+            "home": "Home",
+            "menu": "Menu",
+            "gallery": "Gallery",
+            "about": "About Us",
+            "reviews": "Reviews",
+            "contact": "Contact"
+        },
+        "rights": "© 2024 Sindia Ristorante. All rights reserved."
+    },
+    "gallery": {
+        "title": "Gallery",
+        "altText": {
+            "dish1": "Dish 1",
+            "dish2": "Dish 2",
+            "dish3": "Dish 3",
+            "dish4": "Dish 4",
+            "dish5": "Dish 5",
+            "dish6": "Dish 6"
+        }
+    },
+    "menu": {
+        "title": "Our Menu",
+        "description": "Discover our selection of authentic Indian dishes, crafted with the finest ingredients to bring the flavors of India to Sienna.",
+        "viewMenu": "View Full Menu"
+    },
+    "reviews": {
+        "title": "Customer Reviews",
+        "feedback": [
+            {
+                "text": "Absolutely loved the atmosphere at Sindia. The flavors were spot on, and the presentation was delightful! Can’t wait to return.",
+                "author": "- Marco T."
+            },
+            {
+                "text": "A beautiful taste of India in the heart of Sienna. Authentic food, warm ambiance, and wonderful service. Highly recommended!",
+                "author": "- Laura R."
+            },
+            {
+                "text": "Sindia offers the best Indian food experience in town. The spices, the aroma, everything felt like I was transported to India.",
+                "author": "- Giovanni S."
+            }
+        ]
+    }
+}

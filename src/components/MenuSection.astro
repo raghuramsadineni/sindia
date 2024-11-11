@@ -1,18 +1,22 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang); // Get translation function based on the selected language
+---
+
 <section id="menu" class="py-16 px-6 bg-gray-100 text-gray-800 text-center">
   <div class="max-w-3xl mx-auto">
-    <h2 class="text-4xl md:text-5xl font-heading mb-6">Our Menu</h2>
+    <h2 class="text-4xl md:text-5xl font-heading mb-6">{t("menu.title")}</h2>
     <p class="font-body text-lg md:text-xl leading-relaxed mb-8">
-      Discover our selection of authentic Indian dishes, crafted with the finest
-      ingredients to bring the flavors of India to Sienna. Whether you prefer
-      spicy curries, mild biryanis, or fresh naan, there’s something special for
-      everyone.
+      {t("menu.description")}
     </p>
     <a
       href="/assets/menu.pdf"
       target="_blank"
       class="bg-primary text-white px-6 py-3 rounded-full hover:bg-secondary transition-all duration-300"
     >
-      View Full Menu
+      {t("menu.viewFullMenu")}
     </a>
   </div>
 </section>

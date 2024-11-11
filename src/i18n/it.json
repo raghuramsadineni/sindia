@@ -1,0 +1,79 @@
+{
+    "meta": {
+        "description": "Vivi la cucina indiana autentica da Sindia a Siena, Italia. Goditi una varietà di piatti tradizionali preparati con ingredienti freschi.",
+        "keywords": "Ristorante Indiano, Cucina Indiana, Siena, Sindia, Cibo Autentico",
+        "title": "Sindia - Cucina Indiana Autentica"
+    },
+    "header": {
+        "home": "Home",
+        "menu": "Menu",
+        "gallery": "Galleria",
+        "about": "Chi siamo",
+        "reviews": "Recensioni",
+        "contact": "Contatto",
+        "reserve": "Prenota",
+        "language": "IT"
+    },
+    "hero": {
+        "welcome": "Benvenuti a Sindia",
+        "tagline": "Cucina Indiana Autentica nel Cuore di Siena",
+        "reserveButton": "Prenota un Tavolo"
+    },
+    "about": {
+        "title": "Chi siamo",
+        "description": "Sindia è un ristorante indiano autentico situato nel cuore di Siena, Italia. Portiamo i sapori dell'India alla tua tavola, combinando ricette tradizionali con ingredienti freschi locali."
+    },
+    "contact": {
+        "title": "Contatto",
+        "description": "Ci piacerebbe sentirti! Per prenotazioni, domande o richieste generali, mettiti in contatto.",
+        "message": "Invia Messaggio",
+        "call": "Chiamaci al",
+        "email": "Inviaci una email a"
+    },
+    "footer": {
+        "title": "Sindia Ristorante",
+        "subtitle": "Cucina Indiana Autentica a Siena, Italia",
+        "nav": {
+            "home": "Home",
+            "menu": "Menu",
+            "gallery": "Galleria",
+            "about": "Chi siamo",
+            "reviews": "Recensioni",
+            "contact": "Contatto"
+        },
+        "rights": "© 2024 Sindia Ristorante. Tutti i diritti riservati."
+    },
+    "gallery": {
+        "title": "Galleria",
+        "altText": {
+            "dish1": "Piatto 1",
+            "dish2": "Piatto 2",
+            "dish3": "Piatto 3",
+            "dish4": "Piatto 4",
+            "dish5": "Piatto 5",
+            "dish6": "Piatto 6"
+        }
+    },
+    "menu": {
+        "title": "Il Nostro Menu",
+        "description": "Scopri la nostra selezione di piatti indiani autentici, preparati con i migliori ingredienti per portare i sapori dell'India a Siena.",
+        "viewMenu": "Vedi il menu completo"
+    },
+    "reviews": {
+        "title": "Recensioni dei Clienti",
+        "feedback": [
+            {
+                "text": "Ho adorato l'atmosfera di Sindia. I sapori erano perfetti e la presentazione era deliziosa! Non vedo l'ora di tornare.",
+                "author": "- Marco T."
+            },
+            {
+                "text": "Un bellissimo assaggio d'India nel cuore di Siena. Cibo autentico, ambiente caldo e servizio meraviglioso. Altamente raccomandato!",
+                "author": "- Laura R."
+            },
+            {
+                "text": "Sindia offre la migliore esperienza culinaria indiana in città. Le spezie, l'aroma, tutto sembrava trasportarmi in India.",
+                "author": "- Giovanni S."
+            }
+        ]
+    }
+}

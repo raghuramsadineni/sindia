@@ -1,15 +1,22 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
 <section
   id="home"
   class="h-screen bg-cover bg-center flex flex-col items-center justify-center text-center text-white"
   style="background-image: url('/assets/logo.jpg')"
 >
-  <h1 class="text-5xl md:text-6xl font-heading mb-4">Welcome to Sindia</h1>
+  <h1 class="text-5xl md:text-6xl font-heading mb-4">{t("hero.welcome")}</h1>
   <p class="text-lg md:text-2xl font-body mb-6">
-    Authentic Indian Cuisine in the Heart of Sienna
+    {t("hero.tagline")}
   </p>
   <button
     class="bg-secondary text-white px-6 py-3 rounded-full hover:bg-primary transition-transform duration-300 ease-in-out"
   >
-    Reserve a Table
+    {t("hero.reserveButton")}
   </button>
 </section>

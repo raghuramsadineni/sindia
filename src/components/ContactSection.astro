@@ -1,9 +1,15 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
 <section id="contact" class="py-16 px-6 bg-gray-100 text-gray-800 text-center">
   <div class="max-w-3xl mx-auto">
-    <h2 class="text-4xl md:text-5xl font-heading mb-8">Contact Us</h2>
+    <h2 class="text-4xl md:text-5xl font-heading mb-8">{t("contact.title")}</h2>
     <p class="font-body text-lg md:text-xl mb-6">
-      We'd love to hear from you! For reservations, questions, or general
-      inquiries, please get in touch.
+      {t("contact.description")}
     </p>
     <form class="space-y-6 mb-8">
       <input
@@ -24,19 +30,19 @@
         type="submit"
         class="bg-primary text-white px-6 py-3 rounded-full hover:bg-secondary transition-all duration-300"
       >
-        Send Message
+        {t("contact.message")}
       </button>
     </form>
     <p class="font-body text-lg md:text-xl">
-      Or call us at <a
-        href="tel:+1234567890"
-        class="text-primary hover:underline">+12 345 678 90</a
+      {t("contact.call")}
+      <a href="tel:+1234567890" class="text-primary hover:underline"
+        >+12 345 678 90</a
       >
     </p>
     <p class="font-body text-lg md:text-xl mt-4">
-      Email us at <a
-        href="mailto:info@sindia.com"
-        class="text-primary hover:underline">info@sindia.com</a
+      {t("contact.email")}
+      <a href="mailto:info@sindia.com" class="text-primary hover:underline"
+        >info@sindia.com</a
       >
     </p>
   </div>
