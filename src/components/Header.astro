@@ -18,6 +18,7 @@ const handleLanguageChange = (event: Event) => {
 
     // Add an event listener to handle language change
     languageSwitcher.addEventListener("change", (event) => {
+      // @ts-ignore
       const selectedLang = event.target.value ?? "it";
       window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
     });
