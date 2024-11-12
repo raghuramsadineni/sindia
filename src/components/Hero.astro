@@ -1,22 +1,26 @@
----
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
-
-const lang = getLangFromUrl(Astro.url);
-const t = useTranslations(lang);
----
-
 <section
   id="home"
-  class="h-screen bg-cover bg-center flex flex-col items-center justify-center text-center text-white"
-  style="background-image: url('/assets/logo.jpg')"
+  class="h-screen bg-cover bg-center flex flex-col items-center justify-center text-center text-white bg"
 >
-  <h1 class="text-5xl md:text-6xl font-heading mb-4">{t("hero.welcome")}</h1>
-  <p class="text-lg md:text-2xl font-body mb-6">
-    {t("hero.tagline")}
-  </p>
-  <button
-    class="bg-secondary text-white px-6 py-3 rounded-full hover:bg-primary transition-transform duration-300 ease-in-out"
-  >
-    {t("hero.reserveButton")}
-  </button>
 </section>
+
+<style>
+  .bg {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("../assets/hero/VetroCucina.jpg");
+  }
+
+  @media screen and (min-width: 769px) {
+    .bg {
+      background-image: url("../assets/hero/VetroCucinaL.jpg");
+    }
+  }
+
+  @media screen and (min-width: 1281px) {
+    .bg {
+      background-image: url("../assets/hero/VetroCucinaL.jpg");
+    }
+  }
+</style>

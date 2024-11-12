@@ -1,0 +1,43 @@
+---
+import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import Instagram from "../assets/social/instagram.svg";
+import Facebook from "../assets/social/facebook.svg";
+import Twitter from "../assets/social/twitter.svg";
+import { Image } from "astro:assets";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+---
+
+<section id="social-media" class="py-16 px-6 bg-blue-50 text-gray-800">
+  <div class="max-w-4xl mx-auto text-center">
+    <h2 class="text-4xl md:text-5xl font-heading mb-6">{t("social.title")}</h2>
+
+    <div class="flex justify-center space-x-6">
+      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+        <Image
+          src={Facebook}
+          alt="Facebook"
+          width={Facebook.width}
+          height={Facebook.height}
+        />
+      </a>
+      <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+        <Image
+          src={Twitter}
+          alt="Twitter"
+          width={Twitter.width}
+          height={Twitter.height}
+        />
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+        <Image
+          src={Instagram}
+          alt="Instagram"
+          width={Instagram.width}
+          height={Instagram.height}
+        />
+      </a>
+    </div>
+  </div>
+</section>

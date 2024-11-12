@@ -14,11 +14,6 @@
         "reserve": "Prenota",
         "language": "IT"
     },
-    "hero": {
-        "welcome": "Benvenuti a Sindia",
-        "tagline": "Cucina Indiana Autentica nel Cuore di Siena",
-        "reserveButton": "Prenota un Tavolo"
-    },
     "about": {
         "title": "Chi siamo",
         "description": "Sindia è un ristorante indiano autentico situato nel cuore di Siena, Italia. Portiamo i sapori dell'India alla tua tavola, combinando ricette tradizionali con ingredienti freschi locali."
@@ -75,5 +70,8 @@
                 "author": "- Giovanni S."
             }
         ]
+    },
+    "social": {
+        "title": "Connettiti con noi sui Social Media!"
     }
 }

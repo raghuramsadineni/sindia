@@ -1,15 +1,10 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import { languages, defaultLang } from "../i18n/ui";
+import { Image } from "astro:assets";
+import Logo from "../assets/name.png";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
-
-const handleLanguageChange = (event: Event) => {
-  const target = event.target as HTMLSelectElement;
-  const selectedLang = target.value;
-  window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
-};
 ---
 
 <script>
@@ -17,9 +12,8 @@ const handleLanguageChange = (event: Event) => {
     const languageSwitcher = document.getElementById("languageSwitcher");
 
     // Add an event listener to handle language change
-    languageSwitcher.addEventListener("change", (event) => {
-      // @ts-ignore
-      const selectedLang = event.target.value ?? "it";
+    languageSwitcher.addEventListener("change", (event: Event) => {
+      const selectedLang = (event.target as HTMLSelectElement).value ?? "it";
       window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
     });
   });
@@ -28,7 +22,7 @@ const handleLanguageChange = (event: Event) => {
 <header
   class="sticky top-0 z-50 bg-white shadow-md flex items-center justify-between px-4 py-3"
 >
-  <img src="/assets/name.png" alt="Sindia Logo" class="h-8 w-auto" />
+  <Image src={Logo} alt="Sindia Logo" height={32} />
   <nav class="hidden md:flex space-x-6 text-primary font-heading">
     <a href={`/${lang}#home`} class="hover:underline">{t("header.home")}</a>
     <a href={`/${lang}#menu`} class="hover:underline">{t("header.menu")}</a>
@@ -44,9 +38,9 @@ const handleLanguageChange = (event: Event) => {
     >
   </nav>
   <div class="flex items-center space-x-4">
-    <button
+    <a
       class="bg-primary text-white px-4 py-2 rounded-full hover:bg-secondary transition-all"
-      >{t("header.reserve")}</button
+      href="tel:+39 3758999969">{t("header.reserve")}</a
     >
     <select
       class="border-none bg-transparent font-body text-primary"

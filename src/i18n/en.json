@@ -13,11 +13,6 @@
         "reserve": "Reserve",
         "language": "EN"
     },
-    "hero": {
-        "welcome": "Welcome to Sindia",
-        "tagline": "Authentic Indian Cuisine in the Heart of Sienna",
-        "reserveButton": "Reserve a Table"
-    },
     "about": {
         "title": "About Sindia",
         "description": "Sindia is an authentic Indian restaurant located in the heart of Sienna, Italy. We bring the flavors of India to your table, combining traditional recipes with fresh local ingredients."
@@ -74,5 +69,8 @@
                 "author": "- Giovanni S."
             }
         ]
+    },
+    "social": {
+        "title": "Connect with Us on Social Media!"
     }
 }
