@@ -1,6 +1,5 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
-import Logo from "../assets/Logo.jpg";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
@@ -17,7 +16,7 @@ const t = useTranslations(lang);
       content="Indian Restaurant, Indian Cuisine, Sienna, Sindia, Authentic Food"
     />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={Logo.src} />
+    <link rel="icon" type="image/svg+xml" href="/assets/logo.jpg" />
     <link
       href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Poppins:wght@400;500&display=swap"
       rel="stylesheet"
