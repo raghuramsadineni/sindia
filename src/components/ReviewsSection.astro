@@ -10,7 +10,7 @@ const t = useTranslations(lang); // Get translation function based on the select
     <h2 class="text-4xl md:text-5xl font-heading mb-8">{t("reviews.title")}</h2>
     <div class="space-y-8">
       {
-        t("reviews.feedback").map((review: any, index: number) => (
+        t("reviews.feedback").map((review: any) => (
           <blockquote class="p-6 bg-white rounded-lg shadow-md">
             <p class="font-body text-lg md:text-xl leading-relaxed">
               "{review.text}"
