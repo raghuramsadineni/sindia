@@ -1,4 +1,4 @@
-import { ui, defaultLang } from './ui';
+import { ui, defaultLang, showDefaultLang } from './ui';
 
 export const getLangFromUrl = (url: URL) => {
     const [, lang] = url.pathname.split('/');
@@ -13,5 +13,11 @@ const getNestedValue = (obj: any, path: string): any => {
 export const useTranslations = (lang: keyof typeof ui) => {
     return function t(key: any) {
         return getNestedValue(ui[lang], key) || getNestedValue(ui[defaultLang], key);
+    }
+}
+
+export function useTranslatedPath(lang: keyof typeof ui) {
+    return function translatePath(path: string, l: string = lang) {
+        return !showDefaultLang && l === defaultLang ? path : `/${l}${path}`
     }
 }

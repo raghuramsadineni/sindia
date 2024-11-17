@@ -1,10 +1,15 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "../i18n/utils";
 import { Image } from "astro:assets";
 import Logo from "../assets/name.png";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 ---
 
 <script>
@@ -14,7 +19,8 @@ const t = useTranslations(lang);
     // Add an event listener to handle language change
     languageSwitcher.addEventListener("change", (event: Event) => {
       const selectedLang = (event.target as HTMLSelectElement).value ?? "it";
-      window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
+      const lang = selectedLang === "it" ? "" : "en";
+      window.location.href = `/${lang}/`; // Redirect to the selected language page
     });
   });
 </script>
@@ -48,18 +54,22 @@ const t = useTranslations(lang);
 >
   <Image src={Logo} alt="Sindia Logo" height={32} />
   <nav class="hidden md:flex space-x-6 text-primary font-heading">
-    <a href={`/${lang}#home`} class="hover:underline">{t("header.home")}</a>
+    <a href={translatePath(`#home`)} class="hover:underline"
+      >{t("header.home")}</a
+    >
     <a href="../assets/SINDIA_RISTORANTE.pdf" class="hover:underline"
       >{t("header.menu")}</a
     >
-    <a href={`/${lang}#gallery`} class="hover:underline"
+    <a href={translatePath(`#gallery`)} class="hover:underline"
       >{t("header.gallery")}</a
     >
-    <a href={`/${lang}#about`} class="hover:underline">{t("header.about")}</a>
-    <a href={`/${lang}#reviews`} class="hover:underline"
+    <a href={translatePath(`#about`)} class="hover:underline"
+      >{t("header.about")}</a
+    >
+    <a href={translatePath(`#reviews`)} class="hover:underline"
       >{t("header.reviews")}</a
     >
-    <a href={`/${lang}#contact`} class="hover:underline"
+    <a href={translatePath(`#contact`)} class="hover:underline"
       >{t("header.contact")}</a
     >
   </nav>

@@ -6,7 +6,7 @@ export const languages = {
     it: 'Italiano',
 };
 
-export const defaultLang = 'en';
+export const defaultLang = 'it';
 
 export const ui = {
     en: en,
