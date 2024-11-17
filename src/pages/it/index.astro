@@ -7,6 +7,9 @@ import Layout from "../../components/Layout.astro";
 import MenuSection from "../../components/MenuSection.astro";
 import ReviewsSection from "../../components/ReviewsSection.astro";
 import Social from "../../components/Social.astro";
+
+import Analytics from "@vercel/analytics/astro";
+import SpeedInsights from "@vercel/speed-insights/astro";
 ---
 
 <Layout>
@@ -17,4 +20,7 @@ import Social from "../../components/Social.astro";
   <ReviewsSection />
   <ContactSection />
   <Footer />
+
+  <Analytics />
+  <SpeedInsights />
 </Layout>
