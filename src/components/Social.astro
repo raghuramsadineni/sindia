@@ -2,7 +2,7 @@
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import Instagram from "../assets/social/instagram.svg";
 import Facebook from "../assets/social/facebook.svg";
-import Twitter from "../assets/social/twitter.svg";
+import WhatsApp from "../assets/social/whatsapp.svg";
 import { Image } from "astro:assets";
 
 const lang = getLangFromUrl(Astro.url);
@@ -14,7 +14,23 @@ const t = useTranslations(lang);
     <h2 class="text-4xl md:text-5xl font-heading mb-6">{t("social.title")}</h2>
 
     <div class="flex justify-center space-x-6">
-      <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://wa.me/393758999969"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Image
+          src={WhatsApp}
+          alt="WhatsApp"
+          width={WhatsApp.width}
+          height={WhatsApp.height}
+        />
+      </a>
+      <a
+        href="https://www.facebook.com/profile.php?id=61566586437250"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Image
           src={Facebook}
           alt="Facebook"
@@ -22,15 +38,11 @@ const t = useTranslations(lang);
           height={Facebook.height}
         />
       </a>
-      <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
-        <Image
-          src={Twitter}
-          alt="Twitter"
-          width={Twitter.width}
-          height={Twitter.height}
-        />
-      </a>
-      <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+      <a
+        href="https://www.instagram.com/sindia.siena/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <Image
           src={Instagram}
           alt="Instagram"

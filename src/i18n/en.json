@@ -1,6 +1,6 @@
 {
     "meta": {
-        "description": "Experience authentic Indian cuisine at Sindia in Sienna, Italy. Enjoy a variety of traditional dishes made with fresh ingredients.",
+        "description": "Experience authentic Indian cuisine at Sindia in Siena, Italy. Enjoy a variety of traditional dishes made with fresh ingredients.",
         "title": "Sindia - Authentic Indian Cuisine"
     },
     "header": {
@@ -15,7 +15,7 @@
     },
     "about": {
         "title": "About Sindia",
-        "description": "Sindia is an authentic Indian restaurant located in the heart of Sienna, Italy. We bring the flavors of India to your table, combining traditional recipes with fresh local ingredients."
+        "description": "Sindia is an authentic Indian restaurant located in the heart of Siena, Italy. We bring the flavors of India to your table, combining traditional recipes with fresh local ingredients."
     },
     "contact": {
         "title": "Contact Us",
@@ -26,7 +26,7 @@
     },
     "footer": {
         "title": "Sindia Ristorante",
-        "subtitle": "Authentic Indian Cuisine in Sienna, Italy",
+        "subtitle": "Authentic Indian Cuisine in Siena, Italy",
         "nav": {
             "home": "Home",
             "menu": "Menu",
@@ -50,7 +50,7 @@
     },
     "menu": {
         "title": "Our Menu",
-        "description": "Discover our selection of authentic Indian dishes, crafted with the finest ingredients to bring the flavors of India to Sienna.",
+        "description": "Discover our selection of authentic Indian dishes, crafted with the finest ingredients to bring the flavors of India to Siena.",
         "viewMenu": "View Full Menu"
     },
     "reviews": {
@@ -61,7 +61,7 @@
                 "author": "- Marco T."
             },
             {
-                "text": "A beautiful taste of India in the heart of Sienna. Authentic food, warm ambiance, and wonderful service. Highly recommended!",
+                "text": "A beautiful taste of India in the heart of Siena. Authentic food, warm ambiance, and wonderful service. Highly recommended!",
                 "author": "- Laura R."
             },
             {

@@ -1,25 +1,29 @@
 <section
   id="home"
-  class="h-screen bg-cover bg-center flex flex-col items-center justify-center text-center text-white bg"
+  class="flex flex-col items-center justify-center text-center text-white bg"
 >
 </section>
 
 <style>
   .bg {
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-image: url("../assets/hero/VetroCucina.jpg");
+    height: 60vh;
   }
 
   @media screen and (min-width: 769px) {
     .bg {
+      background-size: cover;
+      height: 80vh;
       background-image: url("../assets/hero/VetroCucinaL.jpg");
     }
   }
 
   @media screen and (min-width: 1281px) {
     .bg {
+      height: 100vh;
       background-image: url("../assets/hero/VetroCucinaL.jpg");
     }
   }

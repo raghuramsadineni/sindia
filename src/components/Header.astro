@@ -25,7 +25,9 @@ const t = useTranslations(lang);
   <Image src={Logo} alt="Sindia Logo" height={32} />
   <nav class="hidden md:flex space-x-6 text-primary font-heading">
     <a href={`/${lang}#home`} class="hover:underline">{t("header.home")}</a>
-    <a href={`/${lang}#menu`} class="hover:underline">{t("header.menu")}</a>
+    <a href="../assets/SINDIA_RISTORANTE.pdf" class="hover:underline"
+      >{t("header.menu")}</a
+    >
     <a href={`/${lang}#gallery`} class="hover:underline"
       >{t("header.gallery")}</a
     >
@@ -38,6 +40,10 @@ const t = useTranslations(lang);
     >
   </nav>
   <div class="flex items-center space-x-4">
+    <a
+      class="md:hidden bg-primary text-white px-4 py-2 rounded-full hover:bg-secondary transition-all"
+      href="../assets/SINDIA_RISTORANTE.pdf">{t("header.menu")}</a
+    >
     <a
       class="bg-primary text-white px-4 py-2 rounded-full hover:bg-secondary transition-all"
       href="tel:+39 3758999969">{t("header.reserve")}</a

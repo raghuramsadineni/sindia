@@ -1,8 +1,17 @@
 ---
+// @ts-nocheck
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
+
+function handleSubmit(event) {
+  event.preventDefault();
+  const name = event.target.elements.name.value;
+  const email = event.target.elements.email.value;
+  const message = event.target.elements.message.value;
+  window.location.href = `mailto:sindia.ristoranteindiano69@gmail.com?subject=Contact%20Form%20Submission&body=Name:%20${name}%0AEmail:%20${email}%0AMessage:%20${message}`;
+}
 ---
 
 <section id="contact" class="py-16 px-6 bg-gray-100 text-gray-800 text-center">
@@ -11,7 +20,7 @@ const t = useTranslations(lang);
     <p class="font-body text-lg md:text-xl mb-6">
       {t("contact.description")}
     </p>
-    <form class="space-y-6 mb-8">
+    <form class="space-y-6 mb-8" onsubmit={handleSubmit}>
       <input
         type="text"
         placeholder="Name"
@@ -36,17 +45,17 @@ const t = useTranslations(lang);
     <p class="font-body text-lg md:text-xl">
       {t("contact.call")}
       <a
-        href="tel:+1234567890"
+        href="tel:+39 3758999969"
         class="text-primary hover:text-blue-900 focus:outline focus:outline-blue-500 underline font-semibold"
-        >+12 345 678 90</a
+        >+39 3758999969</a
       >
     </p>
     <p class="font-body text-lg md:text-xl mt-4">
       {t("contact.email")}
       <a
-        href="mailto:info@sindia.com"
+        href="mailto:sindia.ristoranteindiano69@gmail.com"
         class="text-primary hover:text-blue-900 focus:outline focus:outline-blue-500 underline font-semibold"
-        >info@sindia.com</a
+        >sindia.ristoranteindiano69@gmail.com</a
       >
     </p>
   </div>
