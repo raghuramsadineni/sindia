@@ -1230,6 +1230,11 @@
   dependencies:
     server-only "^0.0.1"
 
+"@vercel/analytics@^1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@vercel/analytics/-/analytics-1.4.0.tgz#9d16917895dcae427c4bca799c90d5f48a99c52a"
+  integrity sha512-eUwWW7l8nPJb0nJmjZuYp9o7YZ9XPj67lU9mEogaPXiFxq/SFB5DMnvQVk4aKcL8kFgotiYdDZWxdiNcWo7cgg==
+
 "@vercel/edge@^1.1.2":
   version "1.1.2"
   resolved "https://registry.npmjs.org/@vercel/edge/-/edge-1.1.2.tgz"
