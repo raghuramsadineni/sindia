@@ -1,0 +1,26 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #b22222;
+  --color-secondary: #ffd700;
+  --color-accent: #228b22;
+
+  --font-family-heading: "Cormorant Garamond", serif;
+  --font-family-body: "Poppins", sans-serif;
+
+  --breakpoint-xs: 0px;
+  --breakpoint-sm: 576px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 992px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+
+  --screen-xs: 0px;
+  --screen-sm: 576px;
+  --screen-md: 768px;
+  --screen-lg: 992px;
+  --screen-xl: 1280px;
+  --screen-2xl: 1536px;
+}

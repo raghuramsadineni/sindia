@@ -19,8 +19,7 @@ const translatePath = useTranslatedPath(lang);
     // Add an event listener to handle language change
     languageSwitcher.addEventListener("change", (event: Event) => {
       const selectedLang = (event.target as HTMLSelectElement).value ?? "it";
-      const lang = selectedLang === "it" ? "" : "en";
-      window.location.href = `/${lang}/`; // Redirect to the selected language page
+      window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
     });
   });
 </script>

@@ -1,5 +1,6 @@
 ---
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import "../styles/global.css";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);
