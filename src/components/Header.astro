@@ -19,33 +19,9 @@ const translatePath = useTranslatedPath(lang);
     // Add an event listener to handle language change
     languageSwitcher.addEventListener("change", (event: Event) => {
       const selectedLang = (event.target as HTMLSelectElement).value ?? "it";
-      window.location.href = `/${selectedLang}/`; // Redirect to the selected language page
+      window.location.href = selectedLang === 'it' ? `/`: `/${selectedLang}`; // Redirect to the selected language page
     });
   });
-</script>
-
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.0.2/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDagZLrwW9iiGBsNbB7c_Rf16eIYDg2lIM",
-    authDomain: "sindia-72f6d.firebaseapp.com",
-    projectId: "sindia-72f6d",
-    storageBucket: "sindia-72f6d.firebasestorage.app",
-    messagingSenderId: "351704236454",
-    appId: "1:351704236454:web:16d8805e1068b8552f0f67",
-    measurementId: "G-M2VWZ98HF0",
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
 </script>
 
 <header

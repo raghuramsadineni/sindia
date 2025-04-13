@@ -33,7 +33,8 @@
             "gallery": "Gallery",
             "about": "About Us",
             "reviews": "Reviews",
-            "contact": "Contact"
+            "contact": "Contact",
+            "admin": "Admin"
         },
         "rights": "© 2024 Sindia Ristorante. All rights reserved."
     },
@@ -72,5 +73,25 @@
     },
     "social": {
         "title": "Connect with Us on Social Media!"
+    },
+    "signin": {
+        "title": "Welcome Back",
+        "google": "Sign in with Google",
+        "email": "Email",
+        "password": "Password",
+        "signIn" : "Sign In",
+        "newHere": "New here?",
+        "createAccount": "Create an account",
+        "language": "Language"
+    },
+    "register": {
+        "title": "Create an Account",
+        "name": "Full Name",
+        "email": "Email",
+        "password": "Password",
+        "register": "Register",
+        "alreadyHaveAccount": "Already have an account?",
+        "signIn" : "Sign In",
+        "language": "Language"
     }
 }

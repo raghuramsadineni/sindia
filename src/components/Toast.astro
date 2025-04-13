@@ -1,0 +1,92 @@
+---
+// src/components/Toast.astro
+
+// Check for message parameters
+const searchParams = Astro.url.searchParams;
+const hasMessage = searchParams.has('error') || searchParams.has('success') || searchParams.has('message');
+
+// Initialize variables
+let type = '';
+let message = '';
+const styles = {
+  error: {
+    bg: 'bg-red-100',
+    text: 'text-red-800',
+    border: 'border-red-200',
+    icon: 'M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+  },
+  success: {
+    bg: 'bg-green-100',
+    text: 'text-green-800',
+    border: 'border-green-200',
+    icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z'
+  },
+  message: {
+    bg: 'bg-blue-100',
+    text: 'text-blue-800',
+    border: 'border-blue-200',
+    icon: 'M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+  }
+};
+
+if (hasMessage) {
+  type = searchParams.has('error') ? 'error' :
+        searchParams.has('success') ? 'success' : 'message';
+  message = searchParams.get(type) || '';
+}
+---
+
+{hasMessage && (
+  <div 
+    id="toast"
+    class="fixed top-4 left-1/2 -translate-x-1/2 z-50 cursor-pointer opacity-0 transition-opacity duration-300"
+    role="alert"
+    aria-live="assertive"
+    aria-atomic="true"
+  >
+    <div class={`flex items-center ${styles[type].bg} ${styles[type].border} px-4 py-3 rounded-lg shadow-lg min-w-[300px]`}>
+      <svg 
+        class={`w-6 h-6 ${styles[type].text} flex-shrink-0 mr-2`}
+        fill="none" 
+        stroke="currentColor" 
+        viewBox="0 0 24 24" 
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path 
+          stroke-linecap="round" 
+          stroke-linejoin="round" 
+          stroke-width="2" 
+          d={styles[type].icon} 
+        />
+      </svg>
+      <span class={`${styles[type].text} text-sm font-medium`}>
+        {message}
+      </span>
+    </div>
+
+    <script is:inline>
+      (function() {
+        const toast = document.getElementById('toast');
+        if (!toast) return;
+
+        // Fade in animation
+        requestAnimationFrame(() => {
+          toast.style.opacity = '1';
+        });
+
+        // Auto-dismiss after 5 seconds
+        const dismissTimer = setTimeout(() => {
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        }, 5000);
+
+        // Click handler for manual dismiss
+        toast.addEventListener('click', () => {
+          clearTimeout(dismissTimer);
+          toast.style.opacity = '0';
+          setTimeout(() => toast.remove(), 300);
+        });
+      })();
+    </script>
+  </div>
+)}

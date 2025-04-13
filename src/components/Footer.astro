@@ -1,9 +1,10 @@
 ---
-import { getLangFromUrl, useTranslations } from "../i18n/utils";
+import { getLangFromUrl, useTranslatedPath, useTranslations } from "../i18n/utils";
 
 // Determine the language from the URL
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang); // t function to retrieve translations
+const translatePath = useTranslatedPath(lang);
 ---
 
 <footer class="py-8 px-6 bg-gray-800 text-white text-center">
@@ -19,6 +20,7 @@ const t = useTranslations(lang); // t function to retrieve translations
       <a href="#about" class="hover:underline">{t("footer.nav.about")}</a>
       <a href="#reviews" class="hover:underline">{t("footer.nav.reviews")}</a>
       <a href="#contact" class="hover:underline">{t("footer.nav.contact")}</a>
+      <a href={translatePath("/signin")} class="hover:underline">{t("footer.nav.admin")}</a>
     </nav>
   </div>
   <p class="font-body text-sm">

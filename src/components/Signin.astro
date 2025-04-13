@@ -1,67 +1,191 @@
 ---
-import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
+import Google from "../assets/social/google.svg";
+import { Image } from "astro:assets";
+import {
+  getLangFromUrl,
+  useTranslatedPath,
+  useTranslations,
+} from "../i18n/utils";
 
-/* Check if the user is authenticated */
-const auth = getAuth(app);
-if (Astro.cookies.has("__session")) {
-  const sessionCookie = Astro.cookies.get("__session").value;
-  const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-  if (decodedCookie) {
-    return Astro.redirect("/dashboard");
-  }
-}
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 ---
 
-<div>
-  <h1>Sign in</h1>
-  <p>New here? <a href="/register">Create an account</a></p>
-  <form action="/api/auth/signin" method="post">
-    <label for="email" for="email">Email</label>
-    <input type="email" name="email" id="email" />
-    <label for="password">Password</label>
-    <input type="password" name="password" id="password" />
-    <button type="submit">Login</button>
-  </form>
+<div
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-cover bg-center bg-no-repeat bg min-h-screen"
+>
+  <div class="fixed inset-0 bg-black/50"></div>
+  <div
+    class="w-full max-w-md bg-white rounded-xl shadow-xl p-8 transition-colors duration-300 relative z-50"
+  >
+    <h1
+      class="text-3xl font-semibold mb-6 text-primary font-heading text-center"
+    >
+      {t("signin.title")}
+    </h1>
+    <button
+      id="googleSignIn"
+      class="w-full flex items-center justify-center gap-3 mb-6 bg-slate-100 hover:bg-slate-200 da text-gray-800 py-2 px-4 rounded-lg transition-colors font-semibold font-body"
+    >
+      <Image
+        src={Google}
+        alt="Google Logo"
+        width={Google.width}
+        height={Google.height}
+      />
+      {t("signin.google")}
+    </button>
+    <form action="/api/auth/signin" method="post" class="space-y-6">
+      <div>
+        <label for="email" class="block mb-2 font-body text-gray-700"
+          >{t("signin.email")}</label
+        >
+        <input
+          type="email"
+          name="email"
+          id="email"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent bg-transparent transition-all"
+          required
+        />
+      </div>
+
+      <div>
+        <label for="password" class="block mb-2 font-body text-gray-700"
+          >{t("signin.password")}</label
+        >
+        <input
+          type="password"
+          name="password"
+          id="password"
+          class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary focus:border-transparent bg-transparent transition-all"
+          required
+        />
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition-opacity font-semibold font-body"
+      >
+        {t("signin.signIn")}
+      </button>
+    </form>
+
+    <p class="mt-6 text-center text-gray-600 font-body">
+      {t("signin.newHere")}
+      <a
+        href={translatePath(`/register`)}
+        class="text-accent hover:text-accent/80 transition-colors"
+      >
+        {t("signin.createAccount")}
+      </a>
+    </p>
+
+    <div class="flex items-center justify-center mt-6">
+      <label for="languageSwitcher" class="block font-body text-gray-700"
+          >{t("signin.language")} :</label
+        >
+      <select
+        aria-label="Language Switcher"
+        class="border-none bg-transparent font-body text-primary"
+        value={lang}
+        id="languageSwitcher"
+      >
+        <option value="en" selected={lang === "en"}>EN</option>
+        <option value="it" selected={lang === "it"}>IT</option>
+      </select>
+    </div>
+  </div>
 </div>
 
+<style>
+  .bg {
+    background-image: url("../assets/hero/VetroCucina.jpg");
+  }
+
+  @media screen and (min-width: 769px) {
+    .bg {
+      background-size: cover;
+      background-image: url("../assets/hero/VetroCucinaL.jpg");
+    }
+  }
+
+  @media screen and (min-width: 1281px) {
+    .bg {
+      background-image: url("../assets/hero/VetroCucinaL.jpg");
+    }
+  }
+</style>
+
 <script>
-    import {
-      getAuth,
-      inMemoryPersistence,
-      signInWithEmailAndPassword,
-    } from "firebase/auth";
-    import { app } from "../firebase/client";
-  
-    const auth = getAuth(app);
-    // This will prevent the browser from storing session data
-    auth.setPersistence(inMemoryPersistence);
-  
-    const form = document.querySelector("form") as HTMLFormElement;
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      const email = formData.get("email")?.toString();
-      const password = formData.get("password")?.toString();
-  
-      if (!email || !password) {
-        return;
-      }
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-      const idToken = await userCredential.user.getIdToken();
-      const response = await fetch("/api/auth/signin", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      });
-  
-      if (response.redirected) {
-        window.location.assign(response.url);
-      }
+  import {
+    getAuth,
+    inMemoryPersistence,
+    signInWithEmailAndPassword,
+    GoogleAuthProvider,
+    signInWithPopup,
+  } from "firebase/auth";
+  import { app } from "../firebase/client";
+
+  const auth = getAuth(app);
+  // This will prevent the browser from storing session data
+  auth.setPersistence(inMemoryPersistence);
+
+  const form = document.querySelector("form") as HTMLFormElement;
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+    const email = formData.get("email")?.toString();
+    const password = formData.get("password")?.toString();
+
+    if (!email || !password) {
+      return;
+    }
+    const userCredential = await signInWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    const idToken = await userCredential.user.getIdToken();
+    const response = await fetch("/api/auth/signin", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
     });
-  </script>
+
+    if (response.redirected) {
+      window.location.assign(response.url);
+    }
+  });
+
+  const googleSignin = document.querySelector(
+    "#googleSignIn"
+  ) as HTMLButtonElement;
+  googleSignin.addEventListener("click", async () => {
+    const provider = new GoogleAuthProvider();
+    const userCredential = await signInWithPopup(auth, provider);
+    const idToken = await userCredential.user.getIdToken();
+    const res = await fetch("/api/auth/signin", {
+      headers: {
+        Authorization: `Bearer ${idToken}`,
+      },
+    });
+
+    if (res.redirected) {
+      window.location.assign(res.url);
+    }
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const languageSwitcher = document.getElementById("languageSwitcher");
+
+    // Add an event listener to handle language change
+    languageSwitcher.addEventListener("change", (event: Event) => {
+      const selectedLang = (event.target as HTMLSelectElement).value ?? "it";
+      window.location.href = selectedLang === 'it' ? `/signin`: `/${selectedLang}/signin`; // Redirect to the selected language page
+    });
+  });
+</script>

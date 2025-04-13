@@ -3,6 +3,7 @@ import { app } from "../../../firebase/server";
 import { getAuth } from "firebase-admin/auth";
 
 export const GET: APIRoute = async ({ request, cookies, redirect }) => {
+  console.log("Sign in", request);
   const auth = getAuth(app);
 
   /* Get token from request headers */
@@ -16,7 +17,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
 
   /* Verify id token */
   try {
-    await auth.verifyIdToken(idToken);
+    await auth.verifyIdToken(idToken).then((user) => {
+      if(!user.admin){
+        return redirect("/?error=User does not have admin privileges");
+      }
+    });
   } catch (error) {
     return new Response(
       "Invalid token",
@@ -34,5 +39,5 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
     path: "/",
   });
 
-  return redirect("/dashboard");
+  return redirect("/dashboard?success=Signed in successfully");
 };

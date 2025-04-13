@@ -34,7 +34,8 @@
             "gallery": "Galleria",
             "about": "Chi siamo",
             "reviews": "Recensioni",
-            "contact": "Contatto"
+            "contact": "Contatto",
+            "admin": "amministrazione"
         },
         "rights": "© 2024 Sindia Ristorante. Tutti i diritti riservati."
     },
@@ -73,5 +74,25 @@
     },
     "social": {
         "title": "Connettiti con noi sui Social Media!"
+    },
+    "signin": {
+        "title": "Bentornato",
+        "google": "Accedi con Google",
+        "email": "Email",
+        "password": "Password",
+        "signIn": "Registrazione",
+        "newHere": "Nuovo qui?",
+        "createAccount": "Creare un account",
+        "language": "Lingua"
+    },
+    "register": {
+        "title": "Creare un account",
+        "name": "Nome completo",
+        "email": "Email",
+        "password": "Password",
+        "register": "Registrati",
+        "alreadyHaveAccount": "Hai già un account?",
+        "signIn": "Accedi",
+        "language": "Lingua"
     }
 }
