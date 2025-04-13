@@ -1,6 +1,9 @@
 ---
 import { app } from "../firebase/server";
 import { getAuth } from "firebase-admin/auth";
+import { Image } from "astro:assets";
+import Logo from "../assets/name.png";
+import { getLangFromUrl } from "../i18n/utils";
 
 const auth = getAuth(app);
 
@@ -11,12 +14,53 @@ if (!Astro.cookies.has("__session")) {
 const sessionCookie = Astro.cookies.get("__session").value;
 const decodedCookie = await auth.verifySessionCookie(sessionCookie);
 const user = await auth.getUser(decodedCookie.uid);
+const lang = getLangFromUrl(Astro.url);
 ---
 
-<div>
-  <h1>Welcome {user.displayName}</h1>
-  <p>We are happy to see you here</p>
-  <form action="/api/auth/signout">
-    <button type="submit">Sign out</button>
-  </form>
-</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const languageSwitcher = document.getElementById("languageSwitcher");
+
+    // Add an event listener to handle language change
+    languageSwitcher.addEventListener("change", (event: Event) => {
+      const selectedLang = (event.target as HTMLSelectElement).value ?? "it";
+      window.location.href =
+        selectedLang === "it" ? `/dashboard` : `/${selectedLang}/dashboard`; // Redirect to the selected language page
+    });
+  });
+</script>
+
+<header
+  class="sticky top-0 z-50 bg-white shadow-md flex items-center justify-between px-4 py-3"
+>
+  <Image src={Logo} alt="Sindia Logo" height={32} />
+  <div class="flex items-center space-x-4">
+    <select
+      aria-label="Language Switcher"
+      class="border-none bg-transparent font-body text-primary"
+      value={lang}
+      id="languageSwitcher"
+    >
+      <option value="en" selected={lang === "en"}>EN</option>
+      <option value="it" selected={lang === "it"}>IT</option>
+    </select>
+
+    <div class="flex items-center gap-4">
+      <span
+        class="border-l-2 border-secondary pl-3 text-sm font-medium text-primary font-heading tracking-wide"
+      >
+        {user.displayName}
+      </span>
+      <form action="/api/auth/signout">
+        <button
+          type="submit"
+          class="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white shadow-sm transition-all
+                 hover:bg-secondary hover:shadow-md focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-primary
+                 font-body uppercase tracking-wider"
+        >
+          Sign Out
+        </button>
+      </form>
+    </div>
+  </div>
+</header>

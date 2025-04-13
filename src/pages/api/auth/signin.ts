@@ -19,7 +19,7 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   try {
     await auth.verifyIdToken(idToken).then((user) => {
       if(!user.admin){
-        return redirect("/?error=User does not have admin privileges");
+        return redirect("/en/?error=User does not have admin privileges");
       }
     });
   } catch (error) {
@@ -36,8 +36,11 @@ export const GET: APIRoute = async ({ request, cookies, redirect }) => {
   });
 
   cookies.set("__session", sessionCookie, {
+    path: "/en/",
+  });
+  cookies.set("__session", sessionCookie, {
     path: "/",
   });
 
-  return redirect("/dashboard?success=Signed in successfully");
+  return redirect("/en/dashboard?success=Signed in successfully");
 };

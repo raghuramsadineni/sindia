@@ -2,7 +2,7 @@ import type { APIRoute } from "astro";
 
 export const GET: APIRoute = async ({ redirect, cookies }) => {
   cookies.delete("__session", {
-    path: "/",
+    path: "/en/",
   });
-  return redirect("/signin?message=Signed out successfully");
+  return redirect("/en/signin?message=Signed out successfully");
 };

@@ -26,7 +26,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
       displayName: name,
     });
   } catch (error: any) {
-    return redirect("/register?error="+error);
+    return redirect("/en/register?error="+error);
   }
-  return redirect("/signin?success=Created user successfully");
+  return redirect("/en/signin?success=Created user successfully");
 };

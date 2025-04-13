@@ -20,7 +20,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
 
     const resp = await auth.verifyIdToken(idToken).then(async (user) => {
         if (!user.admin) {
-            return redirect("/?error=User does not have admin privileges");
+            return redirect("/en/?error=User does not have admin privileges");
         }
         await auth.setCustomUserClaims(uid, { admin: true })
     });
