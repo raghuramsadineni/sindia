@@ -1,21 +1,14 @@
 ---
-import { app } from "../../firebase/server";
-import { getAuth } from "firebase-admin/auth";
 import Layout from "../../layouts/Layout.astro";
 import SigninComponent from "../../components/Signin.astro";
 
-/* Check if the user is authenticated */
-const auth = getAuth(app);
-if (Astro.cookies.has("__session")) {
-  try {
-    const sessionCookie = Astro.cookies.get("__session").value;
-    const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-    if (decodedCookie && decodedCookie.admin) {
-      return Astro.redirect("/dashboard");
-    }
-  } catch (error) {
-    console.error("Error verifying session cookie:", error);
-  }
+const { cookies, redirect } = Astro;
+
+const accessToken = cookies.get("sb-access-token");
+const refreshToken = cookies.get("sb-refresh-token");
+
+if (accessToken && refreshToken) {
+  return redirect("/dashboard");
 }
 ---
 

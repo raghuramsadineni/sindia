@@ -1,20 +1,16 @@
 ---
-import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
 import { Image } from "astro:assets";
 import Logo from "../assets/name.png";
 import { getLangFromUrl } from "../i18n/utils";
+import { supabase } from "../lib/supabase";
+import ImageEditor from './ImageEditor.astro';
+import MenuEditor from './MenuEditor.astro';
 
-const auth = getAuth(app);
-
-/* Check current session */
-if (!Astro.cookies.has("__session")) {
-  return Astro.redirect("/signin");
-}
-const sessionCookie = Astro.cookies.get("__session").value;
-const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-const user = await auth.getUser(decodedCookie.uid);
 const lang = getLangFromUrl(Astro.url);
+
+const {
+  data: { user },
+} = await supabase.auth.getUser();
 ---
 
 <script>
@@ -46,11 +42,16 @@ const lang = getLangFromUrl(Astro.url);
     </select>
 
     <div class="flex items-center gap-4">
-      <span
-        class="border-l-2 border-secondary pl-3 text-sm font-medium text-primary font-heading tracking-wide"
-      >
-        {user.displayName}
-      </span>
+      <div class="flex items-center gap-4">
+        <Image src={user.user_metadata.picture} alt="" height={32} width={32} class="w-10 h-10 rounded-full" />
+        <div class="font-medium dark:text-white">
+          <div>{user.user_metadata.full_name}</div>
+          <div class="text-sm text-gray-500 dark:text-gray-400">
+            {user.user_metadata.email}
+          </div>
+        </div>
+      </div>
+
       <form action="/api/auth/signout">
         <button
           type="submit"
@@ -64,3 +65,81 @@ const lang = getLangFromUrl(Astro.url);
     </div>
   </div>
 </header>
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 font-['Poppins',_sans-serif]">
+  <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="flex border-b border-gray-200">
+      <button id="tab-images" class="px-8 py-4 text-[#b22222] font-['Cormorant_Garamond',_serif] text-lg font-semibold relative focus:outline-none">
+        Image Editor
+        <span class="absolute bottom-0 left-0 w-full h-1 bg-[#b22222]"></span>
+      </button>
+      <button id="tab-menu" class="px-8 py-4 text-gray-500 font-['Cormorant_Garamond',_serif] text-lg font-semibold relative focus:outline-none">
+        Menu Editor
+      </button>
+    </div>
+    
+    <div id="image-editor-section" class="p-8">
+      <ImageEditor />
+    </div>
+    
+    <div id="menu-editor-section" class="p-8 hidden">
+      <MenuEditor />
+    </div>
+  </div>
+</div>
+
+<script>
+  // Tab switching functionality
+  const tabImages = document.getElementById('tab-images');
+  const tabMenu = document.getElementById('tab-menu');
+  const imageEditorSection = document.getElementById('image-editor-section');
+  const menuEditorSection = document.getElementById('menu-editor-section');
+
+  tabImages.addEventListener('click', () => {
+    // Update tab styles
+    tabImages.classList.add('text-[#b22222]');
+    tabImages.classList.remove('text-gray-500');
+    tabMenu.classList.add('text-gray-500');
+    tabMenu.classList.remove('text-[#b22222]');
+    
+    // Show/hide content
+    imageEditorSection.classList.remove('hidden');
+    menuEditorSection.classList.add('hidden');
+    
+    // Add/remove indicator line
+    if (!tabImages.querySelector('span')) {
+      const indicator = document.createElement('span');
+      indicator.className = 'absolute bottom-0 left-0 w-full h-1 bg-[#b22222]';
+      tabImages.appendChild(indicator);
+    }
+    
+    const menuIndicator = tabMenu.querySelector('span');
+    if (menuIndicator) {
+      menuIndicator.remove();
+    }
+  });
+
+  tabMenu.addEventListener('click', () => {
+    // Update tab styles
+    tabMenu.classList.add('text-[#b22222]');
+    tabMenu.classList.remove('text-gray-500');
+    tabImages.classList.add('text-gray-500');
+    tabImages.classList.remove('text-[#b22222]');
+    
+    // Show/hide content
+    menuEditorSection.classList.remove('hidden');
+    imageEditorSection.classList.add('hidden');
+    
+    // Add/remove indicator line
+    if (!tabMenu.querySelector('span')) {
+      const indicator = document.createElement('span');
+      indicator.className = 'absolute bottom-0 left-0 w-full h-1 bg-[#b22222]';
+      tabMenu.appendChild(indicator);
+    }
+    
+    const imagesIndicator = tabImages.querySelector('span');
+    if (imagesIndicator) {
+      imagesIndicator.remove();
+    }
+  });
+</script>

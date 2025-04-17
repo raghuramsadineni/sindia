@@ -1,26 +1,46 @@
 ---
-import { app } from "../firebase/server";
-import { getAuth } from "firebase-admin/auth";
 import Layout from "../layouts/Layout.astro";
 import DashboardComponent from "../components/Dashboard.astro";
+import { supabase } from "../lib/supabase";
 
-/* Check if the user is authenticated */
-const auth = getAuth(app);
-if (Astro.cookies.has("__session")) {
-  try {
-    const sessionCookie = Astro.cookies.get("__session").value;
-    const decodedCookie = await auth.verifySessionCookie(sessionCookie);
-    const user = await auth.getUser(decodedCookie.uid);
-    
-    if (!user) {
-      return Astro.redirect("/signin");
-    }
-    if (!decodedCookie || !decodedCookie.admin) {
-      return Astro.redirect("/?error=User does not have admin privileges");
-    }
-  } catch (error) {
-    console.error("Error verifying session cookie:", error);
+const accessToken = Astro.cookies.get("sb-access-token");
+const refreshToken = Astro.cookies.get("sb-refresh-token");
+
+if (!accessToken || !refreshToken) {
+  return Astro.redirect("/signin");
+}
+
+let session;
+try {
+  session = await supabase.auth.setSession({
+    refresh_token: refreshToken.value,
+    access_token: accessToken.value,
+  });
+
+  const { data: { user } } = await supabase.auth.getUser();
+  const isAdmin = user?.app_metadata?.is_admin || false;
+
+  if (!isAdmin) {
+    return Astro.redirect("/?error=You dont have access to view Admin page.");
   }
+
+  if (session.error) {
+    Astro.cookies.delete("sb-access-token", {
+      path: "/",
+    });
+    Astro.cookies.delete("sb-refresh-token", {
+      path: "/",
+    });
+    return Astro.redirect("/signin");
+  }
+} catch (error) {
+  Astro.cookies.delete("sb-access-token", {
+    path: "/",
+  });
+  Astro.cookies.delete("sb-refresh-token", {
+    path: "/",
+  });
+  return Astro.redirect("/signin");
 }
 ---
 

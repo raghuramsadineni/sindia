@@ -1,46 +1,49 @@
 import type { APIRoute } from "astro";
-import { app } from "../../../firebase/server";
-import { getAuth } from "firebase-admin/auth";
+import { supabase } from "../../../lib/supabase";
+import type { Provider } from "@supabase/supabase-js";
 
-export const GET: APIRoute = async ({ request, cookies, redirect }) => {
-  console.log("Sign in", request);
-  const auth = getAuth(app);
+export const POST: APIRoute = async ({ request, cookies, redirect }) => {
+  const formData = await request.formData();
+  const email = formData.get("email")?.toString();
+  const password = formData.get("password")?.toString();
+  const provider = formData.get("provider")?.toString();
 
-  /* Get token from request headers */
-  const idToken = request.headers.get("Authorization")?.split("Bearer ")[1];
-  if (!idToken) {
-    return new Response(
-      "No token found",
-      { status: 401 }
-    );
-  }
+  const validProviders = ["google", "github", "discord"];
 
-  /* Verify id token */
-  try {
-    await auth.verifyIdToken(idToken).then((user) => {
-      if(!user.admin){
-        return redirect("/en/?error=User does not have admin privileges");
-      }
+  if (provider && validProviders.includes(provider)) {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: provider as Provider,
+      options: {
+        redirectTo: "http://localhost:4321/api/auth/callback"
+      },
     });
-  } catch (error) {
-    return new Response(
-      "Invalid token",
-      { status: 401 }
-    );
+
+    if (error) {
+      return new Response(error.message, { status: 500 });
+    }
+
+    return redirect(data.url);
   }
 
-  /* Create and set session cookie */
-  const fiveDays = 60 * 60 * 24 * 5 * 1000;
-  const sessionCookie = await auth.createSessionCookie(idToken, {
-    expiresIn: fiveDays,
+  if (!email || !password) {
+    return new Response("Email and password are required", { status: 400 });
+  }
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password,
   });
 
-  cookies.set("__session", sessionCookie, {
-    path: "/en/",
-  });
-  cookies.set("__session", sessionCookie, {
+  if (error) {
+    return new Response(error.message, { status: 500 });
+  }
+
+  const { access_token, refresh_token } = data.session;
+  cookies.set("sb-access-token", access_token, {
     path: "/",
   });
-
-  return redirect("/en/dashboard?success=Signed in successfully");
+  cookies.set("sb-refresh-token", refresh_token, {
+    path: "/",
+  });
+  return redirect("/en/dashboard");
 };
