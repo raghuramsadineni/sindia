@@ -40,7 +40,7 @@ END $$;
 
 DO $$
 DECLARE
-  target_user_id UUID := '93ef0c64-6c53-45e8-8ae0-e03a52bf90f1';
+  target_user_id UUID := '00000000-0000-0000-0000-000000000001'; -- Replace with the actual user ID
 BEGIN
   IF EXISTS (SELECT 1 FROM auth.users WHERE id = target_user_id) THEN
     INSERT INTO public.user_profiles (user_id, is_admin)

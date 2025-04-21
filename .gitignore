@@ -425,3 +425,4 @@ pnpm-debug.log*
 .vercel/
 
 sindia-72f6d.json
+client_secret.json

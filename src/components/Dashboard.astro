@@ -3,7 +3,7 @@ import { Image } from "astro:assets";
 import Logo from "../assets/name.png";
 import { getLangFromUrl } from "../i18n/utils";
 import { supabase } from "../lib/supabase";
-import ImageEditor from './ImageEditor.astro';
+import GalleyEditor from './Gallery/GalleyEditor.astro';
 import MenuEditor from './MenuEditor.astro';
 
 const lang = getLangFromUrl(Astro.url);
@@ -70,16 +70,16 @@ const {
   <div class="bg-white rounded-lg shadow-md overflow-hidden">
     <div class="flex border-b border-gray-200">
       <button id="tab-images" class="px-8 py-4 text-[#b22222] font-['Cormorant_Garamond',_serif] text-lg font-semibold relative focus:outline-none">
-        Image Editor
+        Galley
         <span class="absolute bottom-0 left-0 w-full h-1 bg-[#b22222]"></span>
       </button>
       <button id="tab-menu" class="px-8 py-4 text-gray-500 font-['Cormorant_Garamond',_serif] text-lg font-semibold relative focus:outline-none">
-        Menu Editor
+        Menu
       </button>
     </div>
     
     <div id="image-editor-section" class="p-8">
-      <ImageEditor />
+      <GalleyEditor />
     </div>
     
     <div id="menu-editor-section" class="p-8 hidden">
