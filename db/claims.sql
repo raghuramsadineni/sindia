@@ -8,14 +8,12 @@ CREATE TABLE IF NOT EXISTS public.user_profiles (
   is_admin BOOLEAN DEFAULT FALSE NOT NULL
 );
 
-GRANT USAGE ON SCHEMA public TO postgres, anon, authenticated, service_role;
-GRANT ALL ON public.user_profiles TO postgres, anon, authenticated, service_role;
-
 CREATE OR REPLACE FUNCTION public.update_admin_claim()
 RETURNS TRIGGER AS $$
 BEGIN
   UPDATE auth.users
-  SET raw_app_meta_data = COALESCE(raw_app_meta_data, '{}'::jsonb) || jsonb_build_object('is_admin', NEW.is_admin)
+  SET raw_app_meta_data = COALESCE(raw_app_meta_data, '{}'::jsonb)
+    || jsonb_build_object('is_admin', NEW.is_admin)
   WHERE id = NEW.user_id;
   RETURN NEW;
 EXCEPTION WHEN others THEN
@@ -29,7 +27,8 @@ BEGIN
   IF NOT EXISTS (
     SELECT 1
     FROM pg_trigger
-    WHERE tgname = 'sync_admin_claim' AND tgrelid = 'public.user_profiles'::regclass
+    WHERE tgname = 'sync_admin_claim'
+      AND tgrelid = 'public.user_profiles'::regclass
   ) THEN
     CREATE TRIGGER sync_admin_claim
     AFTER INSERT OR UPDATE ON public.user_profiles
@@ -38,9 +37,13 @@ BEGIN
   END IF;
 END $$;
 
+GRANT USAGE ON SCHEMA public TO postgres, anon, authenticated, service_role;
+GRANT ALL ON public.user_profiles TO postgres, anon, authenticated, service_role;
+
+-- Ensure one user is an admin
 DO $$
 DECLARE
-  target_user_id UUID := '00000000-0000-0000-0000-000000000001'; -- Replace with the actual user ID
+  target_user_id UUID := '93ef0c64-6c53-45e8-8ae0-e03a52bf90f1'; -- Replace this with a real user ID
 BEGIN
   IF EXISTS (SELECT 1 FROM auth.users WHERE id = target_user_id) THEN
     INSERT INTO public.user_profiles (user_id, is_admin)

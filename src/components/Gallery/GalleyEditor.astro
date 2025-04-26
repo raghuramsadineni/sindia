@@ -1,18 +1,14 @@
----
-const response = await fetch(new URL("/api/gallery", Astro.url));
----
-
 <div class="w-full">
-  <h2 class="text-2xl font-['Cormorant_Garamond',_serif] text-[#b22222] mb-6">
+  <h2 class="text-2xl font-['Cormorant_Garamond',_serif] text-primary mb-6">
     Image Editor
   </h2>
 
   <div class="mb-8">
     <div
       id="imageDropArea"
-      class="border-2 border-dashed border-gray-300 p-8 text-center rounded-lg cursor-pointer transition duration-300 ease-in-out bg-gray-50 hover:border-[#b22222] hover:bg-gray-100"
+      class="border-2 border-dashed border-gray-300 p-8 text-center rounded-lg cursor-pointer transition duration-300 ease-in-out bg-gray-50 hover:border-primary hover:bg-gray-100"
     >
-      <div class="mb-4 text-[#b22222]">
+      <div class="mb-4 text-primary">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="48"
@@ -33,7 +29,7 @@ const response = await fetch(new URL("/api/gallery", Astro.url));
         </svg>
       </div>
       <p class="text-gray-700">
-        Drag and drop images here or <span class="text-[#b22222] font-semibold"
+        Drag and drop images here or <span class="text-primary font-semibold"
           >browse</span
         >
       </p>
@@ -68,6 +64,20 @@ const response = await fetch(new URL("/api/gallery", Astro.url));
           </div>
         ))
       }
+      <div
+        class="border border-gray-200 rounded-md overflow-hidden transition duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md"
+        draggable="true"
+        data-filename="dish4.jpg"
+      >
+        <div class="h-36 bg-gray-100">
+          <img src="" class="w-full h-full object-cover" />
+        </div><div class="p-2">
+          <div class="text-sm truncate">dish4.jpg</div><div
+            class="flex justify-center items-center mt-1"
+          >
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -125,12 +135,12 @@ const response = await fetch(new URL("/api/gallery", Astro.url));
 
   function highlight() {
     dropArea.classList.add("border-primary", "bg-primary");
-    dropArea.classList.remove("border-gray-300", "hover:border-[#b22222]");
+    dropArea.classList.remove("border-gray-300", "hover:border-primary");
   }
 
   function unhighlight() {
     dropArea.classList.remove("border-primary", "bg-primary");
-    dropArea.classList.add("border-gray-300", "hover:border-[#b22222]");
+    dropArea.classList.add("border-gray-300", "hover:border-primary");
   }
 
   dropArea.addEventListener("drop", handleDrop, false);
@@ -147,7 +157,7 @@ const response = await fetch(new URL("/api/gallery", Astro.url));
     fileInput.click();
   });
 
-  function handleFiles(e) {
+  async function handleFiles(e) {
     if (!e.target || !e.target.files || e.target.files.length === 0) return;
 
     if (!placeholdersCleared) {
@@ -157,58 +167,14 @@ const response = await fetch(new URL("/api/gallery", Astro.url));
 
     const files = e.target.files;
 
-    for (let i = 0; i < files.length; i++) {
-      uploadFile(files[i]);
-    }
+    await fetch("/api/gallery", {
+      method: "POST",
+      body: files,
+    });
   }
-
-  function uploadFile(file) {
-    if (!file.type.match("image.*")) return;
-
-    const reader = new FileReader();
-
-    reader.onload = function (e) {
-      const imageItem = document.createElement("div");
-      imageItem.className =
-        "border border-gray-200 rounded-md overflow-hidden transition duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md";
-      imageItem.draggable = true;
-      imageItem.dataset.filename = file.name;
-
-      // Add event listeners for drag and drop reordering
-      imageItem.addEventListener("dragstart", handleDragStart);
-      imageItem.addEventListener("dragover", handleDragOver);
-      imageItem.addEventListener("dragleave", handleDragLeave);
-      imageItem.addEventListener("drop", handleReorderDrop);
-      imageItem.addEventListener("dragend", handleDragEnd);
-
-      const thumbnailContainer = document.createElement("div");
-      thumbnailContainer.className = "h-36 bg-gray-100";
-
-      const thumbnail = document.createElement("img");
-      thumbnail.src = e.target.result.toString();
-      thumbnail.className = "w-full h-full object-cover";
-
-      const nameContainer = document.createElement("div");
-      nameContainer.className = "p-2";
-
-      const imageName = document.createElement("div");
-      imageName.className = "text-sm truncate";
-      imageName.textContent = file.name;
-
-      const orderIndicator = document.createElement("div");
-      orderIndicator.className = "flex justify-center items-center mt-1";
-
-      thumbnailContainer.appendChild(thumbnail);
-      nameContainer.appendChild(imageName);
-      nameContainer.appendChild(orderIndicator);
-      imageItem.appendChild(thumbnailContainer);
-      imageItem.appendChild(nameContainer);
-      imageGrid.appendChild(imageItem);
-    };
-
-    reader.readAsDataURL(file);
-  }
-
+</script>
+<script>
+  const imageGrid = document.getElementById("imageGrid");
   // Variables to store drag state
   let draggedItem = null;
 

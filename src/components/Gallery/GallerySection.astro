@@ -2,12 +2,12 @@
 import { Image } from "astro:assets";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
-import dish1 from "../assets/dishes/dish1.jpg";
-import dish2 from "../assets/dishes/dish2.jpg";
-import dish3 from "../assets/dishes/dish3.jpg";
-import dish4 from "../assets/dishes/dish4.jpg";
-import dish5 from "../assets/dishes/dish5.jpg";
-import dish6 from "../assets/dishes/dish6.jpg";
+import dish1 from "../../assets/dishes/dish1.jpg";
+import dish2 from "../../assets/dishes/dish2.jpg";
+import dish3 from "../../assets/dishes/dish3.jpg";
+import dish4 from "../../assets/dishes/dish4.jpg";
+import dish5 from "../../assets/dishes/dish5.jpg";
+import dish6 from "../../assets/dishes/dish6.jpg";
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang); // Get translation function based on the selected language
