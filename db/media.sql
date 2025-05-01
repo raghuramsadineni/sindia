@@ -14,6 +14,7 @@ CREATE TABLE public.media (
 
 REVOKE ALL ON public.media FROM anon, authenticated;
 GRANT SELECT ON public.media TO anon, authenticated;
+GRANT INSERT, UPDATE, DELETE ON public.media TO authenticated;
 ALTER TABLE public.media ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Public can read media" ON public.media;

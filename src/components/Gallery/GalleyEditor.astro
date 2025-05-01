@@ -1,3 +1,11 @@
+---
+import { Image } from "astro:assets";
+
+const response = await fetch(new URL("/api/gallery", Astro.url));
+const galleryImages = await response.json();
+console.log(galleryImages);
+---
+
 <div class="w-full">
   <h2 class="text-2xl font-['Cormorant_Garamond',_serif] text-primary mb-6">
     Image Editor
@@ -29,9 +37,8 @@
         </svg>
       </div>
       <p class="text-gray-700">
-        Drag and drop images here or <span class="text-primary font-semibold"
-          >browse</span
-        >
+        Drag and drop images here or
+        <span class="text-primary font-semibold">browse</span>
       </p>
       <input
         type="file"
@@ -50,34 +57,38 @@
     <p class="text-sm text-gray-500 mb-4">
       <i>Drag and drop images to reorder them</i>
     </p>
+
     <div
       id="imageGrid"
       class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4"
     >
       {
-        Array.from({ length: 5 }).map(() => (
-          <div class="border border-gray-200 rounded-md overflow-hidden transition duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md">
-            <div class="h-36 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:200%_100%] animate-shimmer" />
-            <div class="p-2">
-              <div class="h-4 w-4/5 mx-auto bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:200%_100%] animate-shimmer rounded" />
-            </div>
-          </div>
-        ))
+        galleryImages && galleryImages.length > 0
+          ? galleryImages.map((image) => (
+              <div
+                class="border border-gray-200 rounded-md overflow-hidden transition duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md"
+                draggable="true"
+                data-filename={image.filename}
+              >
+                <Image
+                  src={image.public_url}
+                  alt={image.filename}
+                  inferSize={true}
+                />
+                <div class="p-2">
+                  <div class="text-sm truncate">{image.filename}</div>
+                </div>
+              </div>
+            ))
+          : Array.from({ length: 5 }).map(() => (
+              <div class="border border-gray-200 rounded-md overflow-hidden transition duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md">
+                <div class="h-36 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:200%_100%] animate-shimmer" />
+                <div class="p-2">
+                  <div class="h-4 w-4/5 mx-auto bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 bg-[length:200%_100%] animate-shimmer rounded" />
+                </div>
+              </div>
+            ))
       }
-      <div
-        class="border border-gray-200 rounded-md overflow-hidden transition duration-300 ease-in-out hover:transform hover:-translate-y-1 hover:shadow-md"
-        draggable="true"
-        data-filename="dish4.jpg"
-      >
-        <div class="h-36 bg-gray-100">
-          <img src="" class="w-full h-full object-cover" />
-        </div><div class="p-2">
-          <div class="text-sm truncate">dish4.jpg</div><div
-            class="flex justify-center items-center mt-1"
-          >
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -104,144 +115,120 @@
 </style>
 
 <script>
-  // Image upload functionality
-  const dropArea = document.getElementById("imageDropArea");
-  const fileInput = document.getElementById("imageUpload");
-  const imageGrid = document.getElementById("imageGrid");
+  window.addEventListener("DOMContentLoaded", () => {
+    const dropArea = document.getElementById("imageDropArea");
+    const fileInput = document.getElementById("imageUpload");
 
-  // Clear placeholder images on first upload
-  let placeholdersCleared = false;
+    if (!dropArea || !fileInput) return;
 
-  // Handle file selection
-  fileInput.addEventListener("change", handleFiles);
-
-  // Setup drag and drop for file upload
-  ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
-    dropArea.addEventListener(eventName, preventDefaults, false);
-  });
-
-  function preventDefaults(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }
-
-  ["dragenter", "dragover"].forEach((eventName) => {
-    dropArea.addEventListener(eventName, highlight, false);
-  });
-
-  ["dragleave", "drop"].forEach((eventName) => {
-    dropArea.addEventListener(eventName, unhighlight, false);
-  });
-
-  function highlight() {
-    dropArea.classList.add("border-primary", "bg-primary");
-    dropArea.classList.remove("border-gray-300", "hover:border-primary");
-  }
-
-  function unhighlight() {
-    dropArea.classList.remove("border-primary", "bg-primary");
-    dropArea.classList.add("border-gray-300", "hover:border-primary");
-  }
-
-  dropArea.addEventListener("drop", handleDrop, false);
-
-  function handleDrop(e) {
-    const dt = e.dataTransfer;
-    const files = dt.files;
-    if (files && files.length > 0) {
-      handleFiles({ target: { files } });
-    }
-  }
-
-  dropArea.addEventListener("click", () => {
-    fileInput.click();
-  });
-
-  async function handleFiles(e) {
-    if (!e.target || !e.target.files || e.target.files.length === 0) return;
-
-    if (!placeholdersCleared) {
-      imageGrid.innerHTML = "";
-      placeholdersCleared = true;
-    }
-
-    const files = e.target.files;
-
-    await fetch("/api/gallery", {
-      method: "POST",
-      body: files,
-    });
-  }
-</script>
-<script>
-  const imageGrid = document.getElementById("imageGrid");
-  // Variables to store drag state
-  let draggedItem = null;
-
-  // Drag and Drop Reordering Functionality
-  function handleDragStart(e) {
-    draggedItem = this;
-    setTimeout(() => {
-      this.classList.add("dragging");
-    }, 0);
-
-    // Set the dragged data for compatibility
-    e.dataTransfer.effectAllowed = "move";
-    e.dataTransfer.setData("text/plain", this.dataset.filename);
-  }
-
-  function handleDragOver(e) {
-    if (e.preventDefault) {
+    function preventDefaults(e) {
       e.preventDefault();
+      e.stopPropagation();
     }
 
-    this.classList.add("drag-over");
-    e.dataTransfer.dropEffect = "move";
+    function highlight() {
+      dropArea.classList.add("border-primary", "bg-primary");
+    }
 
-    return false;
-  }
+    function unhighlight() {
+      dropArea.classList.remove("border-primary", "bg-primary");
+    }
 
-  function handleDragLeave(e) {
-    this.classList.remove("drag-over");
-  }
+    async function handleFiles(e) {
+      const files = e.target.files || e.dataTransfer?.files;
+      if (!files || files.length === 0) return;
 
-  function handleReorderDrop(e) {
-    e.stopPropagation();
-    e.preventDefault();
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        formData.append("gallery", files[i]);
+      }
 
-    // Remove visual indicators
-    this.classList.remove("drag-over");
+      await fetch("/api/gallery", {
+        method: "POST",
+        body: formData,
+      });
 
-    // Don't do anything if dropping the same item we're dragging
-    if (draggedItem !== this) {
-      // Get the positions of both elements
-      const allItems = Array.from(imageGrid.children);
-      const draggedIndex = allItems.indexOf(draggedItem);
-      const dropIndex = allItems.indexOf(this);
+      location.reload(); // Refresh page after upload
+    }
 
-      // Handle the actual reordering
-      if (dropIndex < draggedIndex) {
-        // Insert before the drop target
-        imageGrid.insertBefore(draggedItem, this);
-      } else {
-        // Insert after the drop target
-        imageGrid.insertBefore(draggedItem, this.nextSibling);
+    dropArea.addEventListener("click", () => fileInput.click());
+    fileInput.addEventListener("change", handleFiles);
+
+    ["dragenter", "dragover", "dragleave", "drop"].forEach((eventName) => {
+      dropArea.addEventListener(eventName, preventDefaults, false);
+    });
+    ["dragenter", "dragover"].forEach((eventName) => {
+      dropArea.addEventListener(eventName, highlight, false);
+    });
+    ["dragleave", "drop"].forEach((eventName) => {
+      dropArea.addEventListener(eventName, unhighlight, false);
+    });
+    dropArea.addEventListener("drop", (e) => handleFiles(e), false);
+  });
+</script>
+
+<script>
+  window.addEventListener("DOMContentLoaded", () => {
+    const imageGrid = document.getElementById("imageGrid");
+    let draggedItem = null;
+
+    if (!imageGrid) return;
+
+    function handleDragStart(e) {
+      draggedItem = this;
+      setTimeout(() => this.classList.add("dragging"), 0);
+
+      if (e.dataTransfer) {
+        e.dataTransfer.effectAllowed = "move";
+        e.dataTransfer.setData("text/plain", this.dataset.filename || "");
       }
     }
 
-    return false;
-  }
+    function handleDragOver(e) {
+      e.preventDefault();
+      this.classList.add("drag-over");
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = "move";
+      }
+    }
 
-  function handleDragEnd(e) {
-    // Clean up
-    this.classList.remove("dragging");
+    function handleDragLeave(e) {
+      this.classList.remove("drag-over");
+    }
 
-    // Reset all elements that might have drag-over class
-    const items = document.querySelectorAll("#imageGrid > div");
+    function handleDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (draggedItem !== this) {
+        const allItems = Array.from(imageGrid.children);
+        const draggedIndex = allItems.indexOf(draggedItem);
+        const dropIndex = allItems.indexOf(this);
+
+        if (dropIndex < draggedIndex) {
+          imageGrid.insertBefore(draggedItem, this);
+        } else {
+          imageGrid.insertBefore(draggedItem, this.nextSibling);
+        }
+      }
+
+      this.classList.remove("drag-over");
+    }
+
+    function handleDragEnd() {
+      this.classList.remove("dragging");
+      const items = imageGrid.querySelectorAll("div[data-filename]");
+      items.forEach((item) => item.classList.remove("drag-over"));
+      draggedItem = null;
+    }
+
+    const items = imageGrid.querySelectorAll("div[data-filename]");
     items.forEach((item) => {
-      item.classList.remove("drag-over");
+      item.addEventListener("dragstart", handleDragStart);
+      item.addEventListener("dragover", handleDragOver);
+      item.addEventListener("dragleave", handleDragLeave);
+      item.addEventListener("drop", handleDrop);
+      item.addEventListener("dragend", handleDragEnd);
     });
-
-    draggedItem = null;
-  }
+  });
 </script>
