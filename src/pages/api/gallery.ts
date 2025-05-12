@@ -1,5 +1,5 @@
 import type { APIRoute } from "astro";
-import { getImagePublicUrl, getImages, getMaxSortOrder, insertImage, uploadImage } from "../../lib/data";
+import { getImagePublicUrl, getImages, getMaxSortOrder, insertImage, updateImageOrder, uploadImage, type Image } from "../../lib/data";
 
 export const GET: APIRoute = async ({ request }) => {
     const { data, error } = await getImages();
@@ -34,9 +34,32 @@ export const POST: APIRoute = async ({ request, redirect }) => {
             };
             await insertImage(imageData);
         }
-        return redirect('/en/dashboard?success=Files uploaded successfully!!!');
+        return redirect('/en/dashboard?success=Images uploaded successfully!!!');
     }
     catch (error) {
-        return redirect('/en/dashboard?error=Failed to upload files!!!');
+        return redirect('/en/dashboard?error=Failed to upload Images!!!');
+    }
+}
+
+export const PUT: APIRoute = async ({ request }) => {
+    const data = await request.json();
+
+    try {
+        data.forEach(async (image: Image) => {
+            await updateImageOrder(image.id, image.sort_order);
+        });
+
+
+        return new Response(
+            JSON.stringify({
+                message: "Image order updated successfully",
+                data: data,
+            }), { status: 200, headers: { "Content-Type": "application/json" } })
+    } catch (error) {
+        return new Response(
+            JSON.stringify({
+                message: "Error updating image order",
+                error: error.message,
+            }), { status: 500, headers: { "Content-Type": "application/json" } })
     }
 }

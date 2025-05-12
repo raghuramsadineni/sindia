@@ -46,3 +46,11 @@ export const insertImage = async (image:Image) => {
     }
     return data;
 }
+
+export const updateImageOrder = async (id: string, sort_order: number) => {
+    const { data, error } = await supabase.schema(schema).from(tableName).update({ sort_order }).eq('id', id);
+    if (error) {
+        throw error;
+    }
+    return data;
+}
