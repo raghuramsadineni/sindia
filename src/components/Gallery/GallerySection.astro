@@ -2,12 +2,8 @@
 import { Image } from "astro:assets";
 import { getLangFromUrl, useTranslations } from "../../i18n/utils";
 
-import dish1 from "../../assets/dishes/dish1.jpg";
-import dish2 from "../../assets/dishes/dish2.jpg";
-import dish3 from "../../assets/dishes/dish3.jpg";
-import dish4 from "../../assets/dishes/dish4.jpg";
-import dish5 from "../../assets/dishes/dish5.jpg";
-import dish6 from "../../assets/dishes/dish6.jpg";
+const response = await fetch(new URL("/api/gallery", Astro.url));
+const galleryImages = await response.json();
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang); // Get translation function based on the selected language
@@ -17,48 +13,18 @@ const t = useTranslations(lang); // Get translation function based on the select
   <div class="max-w-5xl mx-auto">
     <h2 class="text-4xl md:text-5xl font-heading mb-8">{t("gallery.title")}</h2>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <Image
-        src={dish1}
-        alt={t("gallery.altText.dish1")}
-        width={dish1.height}
-        height={dish1.width}
-        class="w-full h-auto rounded-lg shadow-md"
-      />
-      <Image
-        src={dish2}
-        alt={t("gallery.altText.dish2")}
-        width={dish2.height}
-        height={dish2.width}
-        class="w-full h-auto rounded-lg shadow-md"
-      />
-      <Image
-        src={dish3}
-        alt={t("gallery.altText.dish3")}
-        width={dish3.height}
-        height={dish3.width}
-        class="w-full h-auto rounded-lg shadow-md"
-      />
-      <Image
-        src={dish4}
-        alt={t("gallery.altText.dish4")}
-        width={dish4.height}
-        height={dish4.width}
-        class="w-full h-auto rounded-lg shadow-md"
-      />
-      <Image
-        src={dish5}
-        alt={t("gallery.altText.dish5")}
-        width={dish5.height}
-        height={dish5.width}
-        class="w-full h-auto rounded-lg shadow-md"
-      />
-      <Image
-        src={dish6}
-        alt={t("gallery.altText.dish6")}
-        width={dish6.height}
-        height={dish6.width}
-        class="w-full h-auto rounded-lg shadow-md"
-      />
+      {
+        !!galleryImages &&
+          galleryImages.map((image) => (
+            <Image
+              src={image.public_url}
+              alt={t("gallery.altText.dish1")}
+              width={320}
+              height={320}
+              class="w-full h-auto rounded-lg shadow-md"
+            />
+          ))
+      }
     </div>
   </div>
 </section>

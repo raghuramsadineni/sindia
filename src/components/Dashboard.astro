@@ -13,7 +13,7 @@ const {
 } = await supabase.auth.getUser();
 ---
 
-<script>
+<!-- <script>
   document.addEventListener("DOMContentLoaded", () => {
     const languageSwitcher = document.getElementById("languageSwitcher");
 
@@ -24,14 +24,14 @@ const {
         selectedLang === "it" ? `/dashboard` : `/${selectedLang}/dashboard`; // Redirect to the selected language page
     });
   });
-</script>
+</script> -->
 
 <header
   class="sticky top-0 z-50 bg-white shadow-md flex items-center justify-between px-4 py-3"
 >
-  <Image src={Logo} alt="Sindia Logo" height={32} />
+  <a href="/"><Image src={Logo} alt="Sindia Logo" height={32} /></a>
   <div class="flex items-center space-x-4">
-    <select
+    <!-- <select
       aria-label="Language Switcher"
       class="border-none bg-transparent font-body text-primary"
       value={lang}
@@ -39,11 +39,11 @@ const {
     >
       <option value="en" selected={lang === "en"}>EN</option>
       <option value="it" selected={lang === "it"}>IT</option>
-    </select>
+    </select> -->
 
     <div class="flex items-center gap-4">
       <div class="flex items-center gap-4">
-        <Image src={user.user_metadata.picture} alt="" height={32} width={32} class="w-10 h-10 rounded-full" />
+        <!-- <Image src={user.user_metadata.picture} alt="" height={32} width={32} class="w-10 h-10 rounded-full" /> -->
         <div class="font-medium dark:text-white">
           <div>{user.user_metadata.full_name}</div>
           <div class="text-sm text-gray-500 dark:text-gray-400">
