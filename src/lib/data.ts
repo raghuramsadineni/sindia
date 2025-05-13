@@ -39,7 +39,7 @@ export const getMaxSortOrder = async () => {
     return max_sort_order;
 }
 
-export const insertImage = async (image:Image) => {
+export const insertImage = async (image: Image) => {
     const { data, error } = await supabase.schema(schema).from(tableName).insert(image);
     if (error) {
         throw error;
@@ -53,4 +53,14 @@ export const updateImageOrder = async (id: string, sort_order: number) => {
         throw error;
     }
     return data;
+}
+
+export const deleteImage = async (id: string, filename: string) => {
+    try {
+        await supabase.schema(schema).from(tableName).delete().eq('id', id);
+        await supabase.storage.from(bucketName).remove([`${gallery}/${filename}`]);
+    } catch (error) {
+        throw error;
+    }
+    return true;
 }

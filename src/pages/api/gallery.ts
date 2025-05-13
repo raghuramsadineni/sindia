@@ -1,10 +1,9 @@
 import type { APIRoute } from "astro";
-import { getImagePublicUrl, getImages, getMaxSortOrder, insertImage, updateImageOrder, uploadImage, type Image } from "../../lib/data";
+import { deleteImage, getImagePublicUrl, getImages, getMaxSortOrder, insertImage, updateImageOrder, uploadImage, type Image } from "../../lib/data";
 
-export const GET: APIRoute = async ({ request }) => {
+export const GET: APIRoute = async () => {
     const { data, error } = await getImages();
     if (error) {
-        console.error('Error fetching images:', error);
         return new Response(
             JSON.stringify({
                 message: "Error fetching images",
@@ -59,6 +58,26 @@ export const PUT: APIRoute = async ({ request }) => {
         return new Response(
             JSON.stringify({
                 message: "Error updating image order",
+                error: error.message,
+            }), { status: 500, headers: { "Content-Type": "application/json" } })
+    }
+}
+
+export const DELETE: APIRoute = async ({ request }) => {
+    const { id, filename } = await request.json();
+
+    try {
+        // Delete the image from the database
+        await deleteImage(id, filename);
+
+        return new Response(
+            JSON.stringify({
+                message: "Image deleted successfully",
+            }), { status: 200, headers: { "Content-Type": "application/json" } })
+    } catch (error) {
+        return new Response(
+            JSON.stringify({
+                message: "Error deleting image",
                 error: error.message,
             }), { status: 500, headers: { "Content-Type": "application/json" } })
     }

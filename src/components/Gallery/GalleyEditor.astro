@@ -88,6 +88,7 @@ const galleryImages = await response.json();
 
                   <button
                     type="button"
+                    id={`delete-${image.id}`}
                     data-filename={image.filename}
                     data-id={image.id}
                     class="absolute top-2 right-2 p-1 bg-white rounded-full shadow opacity-0 group-hover:opacity-100 transition-opacity duration-200 focus:outline-none"
@@ -320,20 +321,28 @@ const galleryImages = await response.json();
 </script>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const imgs = document.querySelectorAll('[data-id]');
+  document.addEventListener("DOMContentLoaded", () => {
+    const imgs = document.querySelectorAll("[data-id]");
     imgs.forEach((el) => {
-      const id = el.getAttribute('data-id');
+      const id = el.getAttribute("data-id");
+      const filename = el.getAttribute("data-filename");
       const btn = document.getElementById(`delete-${id}`);
-      btn?.addEventListener('click', async () => {
-        await fetch(`/api/gallery`, {
-          method: 'DELETE',
+      btn?.addEventListener("click", async () => {
+        const res = await fetch(`/api/gallery`, {
+          method: "DELETE",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
-          body: JSON.stringify({ id }),
+          body: JSON.stringify({ id, filename }),
         });
+
+        if (res.ok) {
+          const item = document.getElementById(id);
+          item?.remove();
+        } else {
+          location.assign("/en/dashboard?error=Failed to delete image order");
+        }
       });
     });
-  })
+  });
 </script>
