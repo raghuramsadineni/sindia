@@ -2,6 +2,7 @@
 import { getLangFromUrl, useTranslations } from "../i18n/utils";
 import Toast from "../components/Toast.astro";
 import "../styles/global.css";
+import "../firebase/client"
 
 const lang = getLangFromUrl(Astro.url);
 const t = useTranslations(lang);

@@ -57,8 +57,7 @@ export const updateImageOrder = async (id: string, sort_order: number) => {
 
 export const deleteImage = async (id: string, filename: string) => {
     try {
-        const res = await supabase.schema(schema).from(tableName).delete().eq('id', id);
-        console.log(res);
+        await supabase.schema(schema).from(tableName).delete().eq('id', id);
         await supabase.storage.from(bucketName).remove([`${gallery}/${filename}`]);
     } catch (error) {
         throw error;
