@@ -78,7 +78,8 @@ const galleryImages = await response.json();
                   <Image
                     src={image.public_url}
                     alt={image.filename}
-                    inferSize={true}
+                    width={320}
+                    height={320}
                     class="block w-full h-auto"
                   />
 

@@ -19,6 +19,7 @@ export const POST: APIRoute = async ({ request, redirect }) => {
     const formData = await request.formData();
 
     const files = formData.getAll('gallery') as File[];
+    console.log(files);
     try {
         for (const file of files) {
             const image = await uploadImage(file);
@@ -33,9 +34,11 @@ export const POST: APIRoute = async ({ request, redirect }) => {
             };
             await insertImage(imageData);
         }
+        console.log('Images uploaded successfully');
         return redirect('/en/dashboard?success=Images uploaded successfully!!!');
     }
     catch (error) {
+        console.error(error);
         return redirect('/en/dashboard?error=Failed to upload Images!!!');
     }
 }

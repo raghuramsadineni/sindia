@@ -1,0 +1,102 @@
+---
+// src/components/MenuEditor.astro
+---
+
+<div class="w-full">
+  <h2 class="text-2xl font-['Cormorant_Garamond',_serif] text-[#b22222] mb-6">Menu Editor</h2>
+
+  <div class="mb-8">
+    <div id="pdfDropArea" class="border-2 border-dashed border-gray-300 p-8 text-center rounded-lg cursor-pointer transition duration-300 ease-in-out bg-gray-50 hover:border-[#b22222] hover:bg-gray-100">
+      <div class="mb-4 text-[#b22222]">
+        <!-- SVG icon omitted -->
+      </div>
+      <p class="text-gray-700">Drag and drop PDF menu here or <span class="text-[#b22222] font-semibold">browse</span></p>
+      <input type="file" id="pdfUpload" class="hidden" accept="application/pdf" />
+    </div>
+  </div>
+
+  <div class="mt-8">
+    <h3 class="text-xl font-['Cormorant_Garamond',_serif] mb-4">Current Menu</h3>
+    <div id="menuPreview" class="w-full min-h-[300px] border border-gray-200 rounded-lg overflow-hidden">
+      <div class="flex items-center justify-center w-full h-[300px] bg-gray-50">
+        <div class="text-center text-gray-500">
+          <!-- Default placeholder -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-auto mb-4 opacity-50">
+            <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+            <path d="M13 2v7h7"></path>
+          </svg>
+          <p>No menu uploaded yet</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pdfDropArea = document.getElementById('pdfDropArea');
+  const pdfFileInput = document.getElementById('pdfUpload');
+  const menuPreview = document.getElementById('menuPreview');
+
+  // Drag & drop and click to open input
+  pdfDropArea.addEventListener('click', () => pdfFileInput.click());
+  ['dragenter','dragover','dragleave','drop'].forEach(evt => pdfDropArea.addEventListener(evt, preventDefaults));
+  ['dragenter','dragover'].forEach(evt => pdfDropArea.addEventListener(evt, () => toggleHighlight(true)));
+  ['dragleave','drop'].forEach(evt => pdfDropArea.addEventListener(evt, () => toggleHighlight(false)));
+  pdfDropArea.addEventListener('drop', e => handlePdfFile(e.dataTransfer.files));
+  pdfFileInput.addEventListener('change', e => handlePdfFile((e.target as HTMLInputElement).files));
+
+  function preventDefaults(e) { e.preventDefault(); e.stopPropagation(); }
+  function toggleHighlight(on) {
+    pdfDropArea.classList.toggle('border-[#228b22]', on);
+    pdfDropArea.classList.toggle('bg-[#228b2210]', on);
+    pdfDropArea.classList.toggle('border-gray-300', !on);
+  }
+
+  async function handlePdfFile(files) {
+    if (!files.length) return;
+    const file = files[0];
+    if (file.type !== 'application/pdf') {
+      return alert('Please upload a valid PDF file');
+    }
+
+    // Show immediate client preview
+    const blobUrl = URL.createObjectURL(file);
+    renderPreview(blobUrl, file.name);
+
+    // Upload via Astro API
+    const form = new FormData();
+    form.append('menu', file, file.name);
+
+    try {
+      const res = await fetch('/api/upload-menu', { method: 'POST', body: form });
+      if (!res.ok) throw new Error(await res.text());
+      // After upload, revoke old URL and preview from proxy
+      URL.revokeObjectURL(blobUrl);
+      const proxyUrl = '/assets/SINDIA_RISTORANTE.pdf';
+      renderPreview(proxyUrl, file.name);
+    } catch (err) {
+      console.error('Upload failed:', err);
+      alert('Upload failed');
+    }
+  }
+
+  function renderPreview(url, filename) {
+    menuPreview.innerHTML = `
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <div>
+            <h4 class="text-lg font-semibold">${filename}</h4>
+            <p class="text-sm text-gray-500">Uploaded on ${new Date().toLocaleDateString()}</p>
+          </div>
+          <div class="flex space-x-2">
+            <a href="${url}" target="_blank" class="px-3 py-1 bg-[#ffd700] rounded text-sm hover:bg-opacity-80 transition">Preview</a>
+            <a href="${url}" download class="px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300 transition">Download</a>
+          </div>
+        </div>
+        <div class="bg-gray-100 rounded p-4">
+          <iframe src="${url}" width="100%" height="500px" class="border rounded"></iframe>
+        </div>
+      </div>
+    `;
+  }
+</script>
